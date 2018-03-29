@@ -15,7 +15,8 @@ library(tidyverse)
     fvdata <-   "~/ICPI/Data"
   #import MER data
     df_mer <- read_rds(Sys.glob(file.path(fvdata, "ICPI_FactView_OU_IM_*.Rds")))
-  
+      rm(fvdata)
+    
   #save just raw data from EA Data Nav (MWI)
     # readxl::read_excel("~/Expenditure Analysis (EA)/Malawi 2017/2017 EA Data Nav Tool 1.12.2018-Malawi.xlsx", sheet = "Totals_MCCNav") %>% 
     #  write_csv( here("RawData", "MWI_EA_2017.csv"), na = "")
@@ -30,11 +31,13 @@ library(tidyverse)
   #limit to just indicators of interest
     df_mer <- df_mer %>% 
       filter(indicator %in% indlist, standardizeddisaggregate == "Total Numerator", !mechanismid %in% c("00000", "00001"))
+      rm(indlist)
   
   #NET NEW
     source(here("R", "netnew.R"))
     df_mer <- netnew(df_mer)
-    
+      rm(netnew)
+  
   #subset and aggregate to variable of interst
     df_mer <- df_mer %>% 
       filter(indicator != "TX_CURR") %>% 
@@ -45,7 +48,8 @@ library(tidyverse)
   #add offical names onto dataset
     source(here("R", "officialnames.R"))
     df_mer <- officialnames(df_mer, here("RawData"), 2016)
-
+      rm(officialnames)
+      
   #add achievement variable
     df_mer <- df_mer %>% 
       filter(fy2017_targets != 0) %>% #remove any rows where no targets were set for that mechanism
@@ -90,4 +94,9 @@ library(tidyverse)
         filter(operatingunit == "Malawi")
   
     df_mwi <- left_join(df_mwi, df_ea_mwi, by = c("mechanismid", "indicator"))
-      
+      rm(df_ea_mwi)
+
+# Export ------------------------------------------------------------------
+
+  write_csv(df_mer, here("Output", "global-keyind-mer.csv"), na = "")      
+  write_csv(df_mwi, here("Output", "mwi-keyind-mer_ea.csv"), na = "")      
