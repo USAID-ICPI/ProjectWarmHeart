@@ -1,6 +1,6 @@
 ##   Project: PROJECT WARM HEART
 ##   Author:  A.Chafetz, USAID
-##   Purpose: mechanism results/achievement comparison 
+##   Purpose: mechanism results/achievement comparison - compile data
 ##   Date:    2018.03.29
 ##   Updated: 
 
