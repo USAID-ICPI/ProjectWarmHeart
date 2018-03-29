@@ -1,4 +1,10 @@
+#R stuff
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+#data files
+*.csv
+*.xlsx
+*.xls
